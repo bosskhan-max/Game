@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HASHAM — Khelo &amp; Jeeto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#07070d}
+  body{
+    font-family:'Outfit',system-ui,-apple-system,sans-serif;
+    color:#eef0ff;min-height:100vh;overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before,body::after{
+    content:'';position:fixed;border-radius:50%;filter:blur(100px);z-index:-1;
+    animation:float 16s ease-in-out infinite alternate;
+  }
+  body::before{width:min(62vw,540px);aspect-ratio:1;background:#6d28d9;top:-12vh;left:-12vw;opacity:.45}
+  body::after{width:min(58vw,500px);aspect-ratio:1;background:#0891b2;bottom:-14vh;right:-12vw;opacity:.4;animation-delay:-8s}
+  @keyframes float{to{transform:translate3d(70px,60px,0) scale(1.18)}}
+
+  .hidden{display:none!important}
+  .glass{
+    background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:26px;
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 22px 60px rgba(0,0,0,.45);
+  }
+
+  /* ---------- WELCOME ---------- */
+  .screen{min-height:100vh;display:grid;place-items:center;padding:26px;gap:18px}
+  .auth-card{width:100%;max-width:400px;padding:38px 28px;text-align:center;animation:pop .6s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes pop{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+  .logo{
+    width:76px;height:76px;border-radius:24px;display:grid;place-items:center;
+    font-weight:800;font-size:36px;color:#fff;margin:0 auto 18px;
+    background:linear-gradient(135deg,#7c3aed,#22d3ee);
+    box-shadow:0 14px 34px rgba(124,58,237,.55);
+  }
+  .brand{
+    font-size:40px;font-weight:800;letter-spacing:.2em;
+    background:linear-gradient(90deg,#fff,#c4b5fd,#67e8f9);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .tagline{color:#9aa0b5;font-size:14px;letter-spacing:.16em;margin:8px 0 26px;text-transform:uppercase}
+  .field{text-align:left;margin-bottom:16px}
+  .field label{display:block;font-size:13px;color:#9aa0b5;margin-bottom:8px;font-weight:600}
+  .input{
+    width:100%;padding:16px 18px;border-radius:16px;font-family:inherit;font-size:16px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    color:#fff;outline:none;transition:.25s;
+  }
+  .input::placeholder{color:#6b7189}
+  .input:focus{border-color:#7c3aed;box-shadow:0 0 0 4px rgba(124,58,237,.2)}
+  .shake{animation:shake .4s}
+  @keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+
+  .btn{
+    border:0;border-radius:16px;padding:15px 22px;font-family:inherit;font-size:15px;
+    font-weight:600;cursor:pointer;color:#fff;transition:transform .18s,box-shadow .25s,filter .25s;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:linear-gradient(135deg,#7c3aed,#22d3ee);box-shadow:0 14px 32px rgba(124,58,237,.42)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(34,211,238,.4)}
+  .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .btn-ghost{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16)}
+  .btn-ghost:hover{background:rgba(255,255,255,.13)}
+  .btn-block{width:100%;margin-top:12px}
+  .hint{font-size:12.5px;color:#7b8199;margin-top:14px;line-height:1.5}
+  .credit{color:#6b7189;font-size:13.5px}
+  .credit strong{color:#c4b5fd}
+
+  /* ---------- APP ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:18px 20px;max-width:1120px;margin:0 auto;
+  }
+  .brand-sm{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.18em;font-size:15px}
+  .logo-sm{
+    width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#7c3aed,#22d3ee);font-size:17px;font-weight:800;
+    box-shadow:0 8px 20px rgba(124,58,237,.5);
+  }
+  .user-chip{
+    display:flex;align-items:center;gap:9px;padding:9px 16px;border-radius:999px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+    font-size:14px;font-weight:600;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee;flex:none}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 40px}
+  .balance-card{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden;
+  }
+  .balance-card::after{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 85% 10%,rgba(34,211,238,.22),transparent 60%);
+  }
+  .label{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#9aa0b5}
+  .balance{font-size:34px;font-weight:800;margin-top:6px;display:flex;align-items:baseline;gap:8px}
+  .balance small{font-size:13px;font-weight:600;color:#9aa0b5;letter-spacing:.1em}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;align-items:start}
+  .card{padding:22px}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .card-head h3{font-size:19px;font-weight:700}
+  .badge{
+    font-size:11px;font-weight:700;letter-spacing:.06em;padding:6px 11px;border-radius:999px;
+    background:rgba(34,211,238,.14);color:#67e8f9;border:1px solid rgba(34,211,238,.3);white-space:nowrap;
+  }
+  .muted{color:#9aa0b5;font-size:13.5px;line-height:1.55}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+  .chip{
+    padding:9px 16px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:600;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);
+    color:#cfd3e6;cursor:pointer;transition:.22s;
+  }
+  .chip:hover{background:rgba(255,255,255,.12)}
+  .chip.active{
+    background:linear-gradient(135deg,#7c3aed,#22d3ee);color:#fff;border-color:transparent;
+    box-shadow:0 10px 24px rgba(124,58,237,.4);
+  }
+
+  .canvas-wrap{
+    position:relative;border-radius:20px;overflow:hidden;margin-top:6px;
+    border:1px solid rgba(255,255,255,.12);background:#0b1020;
+  }
+  canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+  .overlay{
+    position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:22px;
+    background:rgba(7,7,13,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    animation:pop .35s ease;
+  }
+  .result-score{font-size:52px;font-weight:800;line-height:1;
+    background:linear-gradient(90deg,#a78bfa,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .overlay h4{margin:10px 0 6px;font-size:19px}
+  .overlay .btn{margin-top:16px}
+
+  .lucky-box{display:grid;place-items:center;padding:22px 0 6px}
+  .lucky-display{
+    width:100%;max-width:260px;aspect-ratio:2.4/1;display:grid;place-items:center;
+    font-size:40px;font-weight:800;letter-spacing:.04em;border-radius:20px;
+    background:radial-gradient(circle at 50% 20%,rgba(124,58,237,.35),rgba(255,255,255,.04));
+    border:1px solid rgba(255,255,255,.14);
+    color:#e8e9ff;transition:.3s;
+  }
+  .lucky-display.spin{color:#a78bfa;animation:pulse .35s infinite alternate}
+  .lucky-display.win{
+    color:#04121a;background:linear-gradient(135deg,#67e8f9,#a7f3d0);
+    box-shadow:0 0 46px rgba(103,232,249,.6);border-color:transparent;
+  }
+  @keyframes pulse{to{opacity:.55;transform:scale(.98)}}
+
+  .footer{text-align:center;color:#6b7189;font-size:13px;padding:34px 0 10px}
+  .footer strong{color:#c4b5fd}
+
+  /* ---------- MODAL ---------- */
+  .modal{
+    position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:22px;
+    background:rgba(4,4,10,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .modal-card{width:100%;max-width:380px;padding:28px 24px;text-align:center;animation:pop .35s ease}
+  .modal-card h3{font-size:22px;margin-bottom:16px}
+  .modal-balance{
+    font-size:30px;font-weight:800;margin:6px 0 18px;
+    background:linear-gradient(90deg,#a78bfa,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ---------- TOAST ---------- */
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translate(-50%,26px);
+    padding:14px 22px;border-radius:16px;font-size:14px;font-weight:600;
+    background:rgba(20,22,40,.95);border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 18px 44px rgba(0,0,0,.55);
+    opacity:0;pointer-events:none;transition:.35s cubic-bezier(.2,.9,.3,1.2);z-index:80;max-width:88vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  @media(max-width:520px){
+    .brand{font-size:33px}
+    .balance{font-size:28px}
+    .topbar{padding:14px 16px}
+    .wrap{padding:0 16px 30px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= WELCOME ================= -->
+<section class="screen" id="welcomeScreen">
+  <div class="auth-card glass">
+    <div class="logo">H</div>
+    <h1 class="brand">HASHAM</h1>
+    <p class="tagline">Khelo · Jeeto · Barhao</p>
+    <div class="field">
+      <label for="nameInput">Apna naam likhein</label>
+      <input id="nameInput" class="input" type="text" maxlength="18"
+             placeholder="Misal: Ali Khan" autocomplete="off" />
+    </div>
+    <button class="btn btn-primary btn-block" id="enterBtn">Dakhil Hon</button>
+    <p class="hint">Naam aap ke device par hamesha ke liye mehfooz rahega.</p>
+  </div>
+  <p class="credit">Created by <strong>Hasham Khan</strong></p>
+</section>
+
+<!-- ================= APP ================= -->
+<main id="appScreen" class="hidden">
+  <header class="topbar">
+    <div class="brand-sm"><span class="logo-sm">H</span><span>HASHAM</span></div>
+    <div class="user-chip"><span class="dot"></span><span id="userName">—</span></div>
+  </header>
+
+  <div class="wrap">
+    <section class="balance-card glass">
+      <div>
+        <p class="label">Aap ka Balance</p>
+        <h2 class="balance"><span id="balanceVal">0</span><small>COINS</small></h2>
+      </div>
+      <button class="btn btn-ghost" id="withdrawBtn">Withdraw</button>
+    </section>
+
+    <div class="grid">
+
+      <!-- FLAPPY -->
+      <section class="card glass">
+        <div class="card-head">
+          <h3>🐦 Flappy Bird</h3>
+          <span class="badge">2× @ 15 · 3× @ 25</span>
+        </div>
+        <p class="muted">Entry chunein. Score 15 par paisa double, score 25 par triple.</p>
+
+        <div class="chips" id="flappyChips">
+          <button class="chip active" data-amt="20">20</button>
+          <button class="chip" data-amt="50">50</button>
+          <button class="chip" data-amt="100">100</button>
+          <button class="chip" data-amt="500">500</button>
+          <button class="chip" data-amt="1000">1000</button>
+          <button class="chip" data-amt="10000">10k</button>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="game" width="400" height="560"></canvas>
+          <div class="overlay hidden" id="resultOverlay">
+            <div>
+              <p class="result-score" id="resultScore">0</p>
+              <h4 id="resultTitle">Game Over</h4>
+              <p class="muted" id="resultText"></p>
+              <button class="btn btn-primary" id="againBtn">Phir Khelo</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="playBtn">Khelo — 20 coins</button>
+        <p class="hint">Tap / Space se parinda uthayein</p>
+      </section>
+
+      <!-- LUCKY DRAW -->
+      <section class="card glass">
+        <div class="card-head">
+          <h3>🎰 Lucky Draw</h3>
+          <span class="badge">min 10</span>
+        </div>
+        <p class="muted">Entry chunein aur apni qismat azmayein.</p>
+
+        <div class="chips" id="luckyChips">
+          <button class="chip active" data-amt="10">10</button>
+          <button class="chip" data-amt="50">50</button>
+          <button class="chip" data-amt="100">100</button>
+          <button class="chip" data-amt="500">500</button>
+          <button class="chip" data-amt="1000">1000</button>
+        </div>
+
+        <div class="lucky-box">
+          <div class="lucky-display" id="luckyDisplay">?</div>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="spinBtn">Lucky Draw Karein — 10</button>
+        <p class="hint" id="luckyMsg">Aap ka inaam yahan nazar aayega.</p>
+      </section>
+
+    </div>
+
+    <footer class="footer">Created by <strong>Hasham Khan</strong> · Demo version</footer>
+  </div>
+</main>
+
+<!-- ================= WITHDRAW MODAL ================= -->
+<div class="modal hidden" id="withdrawModal">
+  <div class="modal-card glass">
+    <h3>Withdraw</h3>
+    <p class="muted">Aap ka balance</p>
+    <p class="modal-balance" id="modalBalance">0 coins</p>
+    <button class="btn btn-primary btn-block" id="doWithdraw">Rs 500 Withdraw Karein</button>
+    <p class="hint">Withdraw / deposit ke liye WhatsApp: <b>0306 7415633</b></p>
+    <button class="btn btn-ghost btn-block" id="closeWithdraw">Band Karein</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   STORAGE  (naam + balance hamesha save)
+   ========================================================= */
+const KEY = { name:'hasham_name', bal:'hasham_balance', hist:'hasham_history' };
+
+const state = {
+  name: localStorage.getItem(KEY.name) || '',
+  balance: Number(localStorage.getItem(KEY.bal)),
+  history: []
+};
+try { state.history = JSON.parse(localStorage.getItem(KEY.hist) || '[]'); } catch(e){ state.history = []; }
+if (!Number.isFinite(state.balance)) state.balance = 10000;   // demo start balance
+
+const $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString('en-US');
+
+function persist(){
+  localStorage.setItem(KEY.bal, state.balance);
+  localStorage.setItem(KEY.hist, JSON.stringify(state.history.slice(0,40)));
+}
+function renderBalance(){ $('balanceVal').textContent = fmt(state.balance); }
+function addBalance(n, note){
+  state.balance += n;
+  state.history.unshift({ t: Date.now(), n, note });
+  persist(); renderBalance();
+}
+
+let toastTimer;
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+}
+
+/* =========================================================
+   WELCOME / NAME
+   ========================================================= */
+$('enterBtn').addEventListener('click', enterSite);
+$('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') enterSite(); });
+
+function enterSite(){
+  const val = $('nameInput').value.trim();
+  if (!val){
+    $('nameInput').classList.add('shake');
+    setTimeout(()=> $('nameInput').classList.remove('shake'), 420);
+    $('nameInput').focus();
+    return;
+  }
+  state.name = val;
+  localStorage.setItem(KEY.name, state.name);   // permanently saved
+  showApp();
+}
+
+function showApp(){
+  $('welcomeScreen').classList.add('hidden');
+  $('appScreen').classList.remove('hidden');
+  $('userName').textContent = state.name;
+  renderBalance();
+}
+
+if (state.name) showApp();
+
+/* =========================================================
+   CHIP SELECTOR HELPER
+   ========================================================= */
+function setupChips(containerId, onChange){
+  const box = $(containerId);
+  box.addEventListener('click', e => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    box.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    onChange(Number(btn.dataset.amt));
+  });
+}
+
+/* =========================================================
+   FLAPPY BIRD
+   ========================================================= */
+const canvas = $('game');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+const BIRD_X = 100, GRAVITY = 1750, FLAP_V = -520;
+const PIPE_W = 66, GAP = 178, SPEED = 175, GROUND = 80;
+
+let bird, pipes, score, playing, over, spawnTimer;
+let flappyEntry = 20;
+
+function resetState(){
+  bird = { y: H/2, vy: 0, r: 15, rot: 0 };
+  pipes = [];
+  score = 0;
+  spawnTimer = 1.3;
+  playing = false;
+  over = false;
+}
+resetState();
+
+function spawnPipe(){
+  const margin = 70;
+  const minTop = margin;
+  const maxTop = H - GROUND - GAP - margin;
+  const top = minTop + Math.random() * (maxTop - minTop);
+  pipes.push({ x: W + 30, top, passed:false });
+}
+
+function update(dt){
+  bird.vy += GRAVITY * dt;
+  bird.y  += bird.vy * dt;
+  bird.rot = Math.max(-0.6, Math.min(1.3, bird.vy / 650));
+
+  spawnTimer -= dt;
+  if (spawnTimer <= 0){ spawnPipe(); spawnTimer = 1.5; }
+
+  for (const p of pipes) p.x -= SPEED * dt;
+
+  for (const p of pipes){
+    if (!p.passed && p.x + PIPE_W < BIRD_X - bird.r){ p.passed = true; score++; }
+  }
+  pipes = pipes.filter(p => p.x + PIPE_W > -90);
+
+  const groundY = H - GROUND;
+  if (bird.y + bird.r >= groundY){ bird.y = groundY - bird.r; return endFlappy(); }
+  if (bird.y - bird.r < 0){ bird.y = bird.r; bird.vy = 0; }
+
+  for (const p of pipes){
+    const inX = BIRD_X + bird.r > p.x && BIRD_X - bird.r < p.x + PIPE_W;
+    if (inX && (bird.y - bird.r < p.top || bird.y + bird.r > p.top + GAP)){
+      return endFlappy();
+    }
+  }
+}
+
+function rr(x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function drawPipe(p){
+  const g = ctx.createLinearGradient(p.x, 0, p.x + PIPE_W, 0);
+  g.addColorStop(0, '#22d3ee');
+  g.addColorStop(.55,'#3b82f6');
+  g.addColorStop(1, '#7c3aed');
+  ctx.fillStyle = g;
+  rr(p.x, -30, PIPE_W, p.top + 30, 14); ctx.fill();
+  rr(p.x, p.top + GAP, PIPE_W, H - (p.top + GAP), 14); ctx.fill();
+}
+
+function drawBird(){
+  ctx.save();
+  ctx.translate(BIRD_X, bird.y);
+  ctx.rotate(bird.rot * 0.45);
+
+  ctx.shadowColor = 'rgba(255,207,92,.85)';
+  ctx.shadowBlur = 24;
+  const bg = ctx.createRadialGradient(-5, -6, 2, 0, 0, bird.r + 7);
+  bg.addColorStop(0, '#fff2c2');
+  bg.addColorStop(1, '#ffb020');
+  ctx.fillStyle = bg;
+  ctx.beginPath(); ctx.arc(0, 0, bird.r, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = '#0b1020';
+  ctx.beginPath(); ctx.arc(5, -5, 3.4, 0, Math.PI * 2); ctx.fill();
+
+  ctx.fillStyle = '#ff7a1a';
+  ctx.beginPath();
+  ctx.moveTo(12, 1); ctx.lineTo(23, 6); ctx.lineTo(12, 11);
+  ctx.closePath(); ctx.fill();
+
+  ctx.restore();
+}
+
+function draw(){
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#0b1030');
+  g.addColorStop(.55,'#141c46');
+  g.addColorStop(1, '#080d1f');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = 'rgba(255,255,255,.16)';
+  for (let i = 0; i < 28; i++){
+    ctx.fillRect((i * 149) % W, (i * 97) % (H - 140), 2, 2);
+  }
+
+  for (const p of pipes) drawPipe(p);
+
+  const gg = ctx.createLinearGradient(0, H - GROUND, 0, H);
+  gg.addColorStop(0, '#1b2547');
+  gg.addColorStop(1, '#0a0f22');
+  ctx.fillStyle = gg;
+  ctx.fillRect(0, H - GROUND, W, GROUND);
+  ctx.fillStyle = 'rgba(34,211,238,.45)';
+  ctx.fillRect(0, H - GROUND, W, 3);
+
+  drawBird();
+
+  ctx.textAlign = 'center';
+  ctx.font = '800 48px Outfit, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,.92)';
+  ctx.shadowColor = 'rgba(34,211,238,.9)';
+  ctx.shadowBlur = 20;
+  ctx.fillText(score, W / 2, 84);
+  ctx.shadowBlur = 0;
+
+  if (!playing && !over){
+    ctx.fillStyle = 'rgba(255,255,255,.72)';
+    ctx.font = '600 17px Outfit, sans-serif';
+    ctx.fillText('Tap / Space se udiye', W / 2, H / 2 - 74);
+  }
+}
+
+let lastT = 0;
+function frame(t){
+  const dt = Math.min((t - lastT) / 1000 || 0, 0.05);
+  lastT = t;
+  if (playing) update(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+function startFlappy(){
+  if (playing) return;
+  if (state.balance < flappyEntry){ toast('Balance kam hai!'); return; }
+  addBalance(-flappyEntry, 'Flappy entry');
+  resetState();
+  playing = true;
+  $('resultOverlay').classList.add('hidden');
+  bird.vy = FLAP_V;
+}
+
+function endFlappy(){
+  if (!playing) return;
+  playing = false;
+  over = true;
+
+  let mult = 0;
+  if (score >= 25) mult = 3;
+  else if (score >= 15) mult = 2;
+
+  const win = flappyEntry * mult;
+  if (win > 0) addBalance(win, 'Flappy jeet ' + mult + 'x');
+
+  $('resultScore').textContent = score;
+  $('resultTitle').textContent = mult ? 'Mubarak Ho! 🎉' : 'Game Over';
+  $('resultText').innerHTML = mult
+    ? 'Aap ne <b>' + mult + '×</b> jeeta — <b>+' + fmt(win) + '</b> coins'
+    : 'Score 15 tak nahi pohncha — entry ' + fmt(flappyEntry) + ' coins gaye.';
+  $('resultOverlay').classList.remove('hidden');
+}
+
+function flap(){ if (playing) bird.vy = FLAP_V; }
+
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (playing) flap();
+  else startFlappy();
+});
+window.addEventListener('keydown', e => {
+  if (e.code === 'Space'){
+    e.preventDefault();
+    if (playing) flap();
+    else if (!$('appScreen').classList.contains('hidden')) startFlappy();
+  }
+});
+
+$('playBtn').addEventListener('click', startFlappy);
+$('againBtn').addEventListener('click', startFlappy);
+
+setupChips('flappyChips', amt => {
+  flappyEntry = amt;
+  $('playBtn').textContent = 'Khelo — ' + fmt(amt) + ' coins';
+});
+
+/* =========================================================
+   LUCKY DRAW
+   ========================================================= */
+let luckyEntry = 10, spinning = false;
+
+function rollPrize(amt){
+  const r = Math.random();
+  if (r < 0.50)  return 0;                    // 50%  — kuch nahi
+  if (r < 0.78)  return Math.round(amt * 0.5); // 28%  — aada
+  if (r < 0.92)  return amt;                   // 14%  — barabar
+  if (r < 0.985) return amt * 2;               // 6.5% — double
+  if (r < 0.998) return amt * 5;               // 1.3% — 5x
+  return amt * 50;                             // 0.2% — JACKPOT
+}
+
+function spin(){
+  if (spinning) return;
+  if (state.balance < luckyEntry){ toast('Balance kam hai!'); return; }
+
+  addBalance(-luckyEntry, 'Lucky entry');
+  spinning = true;
+  $('spinBtn').disabled = true;
+
+  const display = $('luckyDisplay');
+  display.classList.remove('win');
+  display.classList.add('spin');
+  $('luckyMsg').textContent = 'Qismat chal rahi hai…';
+
+  const iv = setInterval(() => {
+    display.textContent = Math.floor(Math.random() * 9999);
+  }, 60);
+
+  setTimeout(() => {
+    clearInterval(iv);
+    const prize = rollPrize(luckyEntry);
+    display.classList.remove('spin');
+    display.textContent = prize > 0 ? '+' + fmt(prize) : '0';
+
+    if (prize > 0){
+      display.classList.add('win');
+      addBalance(prize, 'Lucky draw win');
+      $('luckyMsg').innerHTML = 'Mubarak ho! Aap ne <b>' + fmt(prize) + '</b> coins jeete.';
+      toast('🎉 Aap ne ' + fmt(prize) + ' coins jeete!');
+    } else {
+      $('luckyMsg').textContent = 'Is dafa kuch nahi mila — dobara koshish karein.';
+    }
+
+    spinning = false;
+    $('spinBtn').disabled = false;
+  }, 1900);
+}
+
+$('spinBtn').addEventListener('click', spin);
+setupChips('luckyChips', amt => {
+  luckyEntry = amt;
+  $('spinBtn').textContent = 'Lucky Draw Karein — ' + fmt(amt);
+});
+
+/* =========================================================
+   WITHDRAW  →  WhatsApp
+   ========================================================= */
+const WA_NUMBER = '923067415633';   // 0306 7415633
+
+$('withdrawBtn').addEventListener('click', () => {
+  $('modalBalance').textContent = fmt(state.balance) + ' coins';
+  $('withdrawModal').classList.remove('hidden');
+});
+
+$('closeWithdraw').addEventListener('click', () => {
+  $('withdrawModal').classList.add('hidden');
+});
+
+$('withdrawModal').addEventListener('click', e => {
+  if (e.target === $('withdrawModal')) $('withdrawModal').classList.add('hidden');
+});
+
+$('doWithdraw').addEventListener('click', () => {
+  const msg = encodeURIComponent(
+    'Assalam o Alaikum! Main ' + state.name + ' hoon.\n' +
+    'Mujhe apne HASHAM account se Rs 500 withdraw karne hain.\n' +
+    'Mera balance: ' + fmt(state.balance) + ' coins.'
+  );
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + msg, '_blank');
+  $('withdrawModal').classList.add('hidden');
+  toast('WhatsApp par request bhejein — 0306 7415633');
+});
+</script>
+</body>
+</html>
